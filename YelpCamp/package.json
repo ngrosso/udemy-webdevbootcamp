@@ -1,0 +1,16 @@
+{
+  "name": "yelpcamp",
+  "version": "0.0.1",
+  "description": "yelpcamp project from colt steele's udemy course webdev bootcamp",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ngrosso",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "ejs": "^2.7.1",
+    "express": "^4.17.1"
+  }
+}
