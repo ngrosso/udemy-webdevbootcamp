@@ -1,8 +1,15 @@
 const express = require('express');
 const app = express();
-const port = 3000;
 const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
+//mongoose.connect("mongodb://localhost/demo");
+const port = 3000;
+/*
+var schema = new mongoose.Schema({
+    name: String,
 
+})
+*/
 app.use(bodyParser.urlencoded({extended:true}));
 app.set("view engine","ejs");
 
