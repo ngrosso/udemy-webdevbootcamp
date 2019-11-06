@@ -10,11 +10,13 @@ app.set("view engine", "ejs");
 
 // Schema setup
 mongoose.connect("mongodb://localhost/yelp_camp");
+//genero el esquema campground
 var campgroundSchema = new mongoose.Schema({
     name: String,
     image: String
 });
 
+//genero el modelo campground a partir del esquema
 var Campground = mongoose.model("Campground", campgroundSchema);
 /*
 var campgrounds = [
@@ -23,11 +25,13 @@ var campgrounds = [
     { name: "Mountain Desert", image: "https://s3.amazonaws.com/imagescloud/images/medias/camping/camping-tente.jpg" },
 ]*/
 
+
 app.get('/', (req, res) => {
     res.redirect("campgrounds");
 });
 
 app.get("/campgrounds", (req, res) => {
+    //llamada de mongoDB, busca todos los campgrounds
     Campground.find({},(err, allCampgrounds)=>{
         if(err){
             console.error(err);
@@ -35,15 +39,24 @@ app.get("/campgrounds", (req, res) => {
             res.render("campgrounds",{campgrounds: allCampgrounds})
         }
     })
-    res.render("campgrounds", { campgrounds: campgrounds })
 });
 
 app.post("/campgrounds", (req, res) => {
+    //obtiene nombre e imagen del campground
     var name = req.body.name;
     var image = req.body.image;
+    //genera un objeto con los parametros obtenidos
     var newCampground = { name: name, image, image };
-    campgrounds.push(newCampground);
-    res.redirect("/campgrounds");
+    //los guarda en la base de datos
+    Campground.create(newCampground, (err, newCreated)=>{
+        if(err){
+            console.error(err);
+        }else{
+            //si no hubo errores redirige a campgrounds
+            console.log(newCreated);
+            res.redirect("/campgrounds");
+        }
+    })
 });
 
 app.get("/campgrounds/new", (req, res) => {

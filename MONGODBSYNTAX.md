@@ -1,5 +1,8 @@
 # Mongo db syntax
 
+
+
+**mongo** -> *Arranca la base*
 **show dbs** -> *Muestra bases de datos*
 **use demo** -> *Usa bd "demo" si no existe tambien la crea*
 **db.dogs.insert({name:"John", breed:"collie"})** -> *Crea la coleccion "dogs" e inserta el primer registro*
