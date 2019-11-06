@@ -9,11 +9,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 
 // Schema setup
-mongoose.connect("mongodb://localhost/yelp_camp");
+mongoose.connect("mongodb://localhost:27017/yelp_camp",{useNewUrlParser: true, useUnifiedTopology: true});
 //genero el esquema campground
 var campgroundSchema = new mongoose.Schema({
     name: String,
-    image: String
+    image: String,
+    description: String
 });
 
 //genero el modelo campground a partir del esquema
@@ -30,23 +31,26 @@ app.get('/', (req, res) => {
     res.redirect("campgrounds");
 });
 
+//restful - INDEX
 app.get("/campgrounds", (req, res) => {
     //llamada de mongoDB, busca todos los campgrounds
     Campground.find({},(err, allCampgrounds)=>{
         if(err){
             console.error(err);
         } else {
-            res.render("campgrounds",{campgrounds: allCampgrounds})
+            res.render("index",{campgrounds: allCampgrounds})
         }
     })
 });
 
+//restful - CREATE
 app.post("/campgrounds", (req, res) => {
     //obtiene nombre e imagen del campground
     var name = req.body.name;
     var image = req.body.image;
+    var desc = req.body.desc;
     //genera un objeto con los parametros obtenidos
-    var newCampground = { name: name, image, image };
+    var newCampground = { name: name, image: image, description: desc };
     //los guarda en la base de datos
     Campground.create(newCampground, (err, newCreated)=>{
         if(err){
@@ -59,8 +63,14 @@ app.post("/campgrounds", (req, res) => {
     })
 });
 
+//restful - NEW
 app.get("/campgrounds/new", (req, res) => {
     res.render("new")
 })
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+//restful - SHOW
+app.get("/campgrounds/:id", (req,res)=>{
+
+})
+
+app.listen(port, () => console.log(`YelpCamp app listening on port ${port}!`));
