@@ -9,7 +9,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 
 // Schema setup
-mongoose.connect("mongodb://localhost:27017/yelp_camp",{useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect("mongodb://localhost:27017/yelp_camp", { useNewUrlParser: true, useUnifiedTopology: true });
 //genero el esquema campground
 var campgroundSchema = new mongoose.Schema({
     name: String,
@@ -34,11 +34,11 @@ app.get('/', (req, res) => {
 //restful - INDEX
 app.get("/campgrounds", (req, res) => {
     //llamada de mongoDB, busca todos los campgrounds
-    Campground.find({},(err, allCampgrounds)=>{
-        if(err){
+    Campground.find({}, (err, allCampgrounds) => {
+        if (err) {
             console.error(err);
         } else {
-            res.render("index",{campgrounds: allCampgrounds})
+            res.render("index", { campgrounds: allCampgrounds })
         }
     })
 });
@@ -52,10 +52,10 @@ app.post("/campgrounds", (req, res) => {
     //genera un objeto con los parametros obtenidos
     var newCampground = { name: name, image: image, description: desc };
     //los guarda en la base de datos
-    Campground.create(newCampground, (err, newCreated)=>{
-        if(err){
+    Campground.create(newCampground, (err, newCreated) => {
+        if (err) {
             console.error(err);
-        }else{
+        } else {
             //si no hubo errores redirige a campgrounds
             console.log(newCreated);
             res.redirect("/campgrounds");
@@ -69,8 +69,15 @@ app.get("/campgrounds/new", (req, res) => {
 })
 
 //restful - SHOW
-app.get("/campgrounds/:id", (req,res)=>{
-
+app.get("/campgrounds/:id", (req, res) => {
+    var id = req.params.id
+    Campground.findById(id, (err, foundCampground) => {
+        if (err) {
+            console.error(err);
+        } else {
+            res.render("show", { campground: foundCampground });
+        }
+    });
 })
 
 app.listen(port, () => console.log(`YelpCamp app listening on port ${port}!`));
