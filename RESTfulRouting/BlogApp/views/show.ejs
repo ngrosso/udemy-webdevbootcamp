@@ -2,6 +2,10 @@
 
 <div class="ui main text container segment">
     <div class="ui huge header"><%=blog.title%></div>
+    <form class="deleteForm" action="/blogs/<%=blog._id%>?_method=DELETE" method="POST">
+        <button class="ui red basic button">Delete</button>
+    </form>
+    <a class="ui orange basic button" href="/blogs/<%=blog._id%>/edit">Edit</a>
     <div class="ui top attachede">
         <div class="item">
             <img class="ui centered rounded image" src="<%=blog.image%>" style="width: 500px">

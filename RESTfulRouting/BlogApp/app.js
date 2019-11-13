@@ -1,4 +1,5 @@
 var express = require("express"),
+    methodOverride = require("method-override"),
     bodyParser = require("body-parser"),
     mongoose = require("mongoose"),
     app = express();
@@ -9,6 +10,7 @@ mongoose.connect("mongodb://localhost:27017/restful_blog_app", { useNewUrlParser
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(methodOverride("_method"));
 
 //Mongoose config
 //title, image, body, created
@@ -80,6 +82,31 @@ app.get("/blogs/:id/edit", (req,res)=>{
             res.redirect("/blogs");
         }else{
             res.render("edit", {blog: foundBlog});
+        }
+    })
+});
+
+//Update
+app.put("/blogs/:id",(req,res)=>{
+    Blog.findByIdAndUpdate(req.params.id, req.body.blog, (err,updatedBlog)=>{
+        if(err){
+            console.error(err);
+            res.redirect("/blogs");
+        }else{
+            res.redirect("/blogs/"+req.params.id);
+        }
+    });
+});
+
+//Destroy
+app.delete("/blogs/:id", (req,res)=>{
+    Blog.findByIdAndRemove(req.params.id,(err)=>{
+        if(err){
+            console.error(err);
+            res.redirect("/blogs");
+        }else{
+            console.log("Post eliminado");
+            res.redirect("/blogs");
         }
     })
 });
